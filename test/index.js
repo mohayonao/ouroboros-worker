@@ -1,7 +1,9 @@
-import assert from "power-assert";
-import OUroborosWorker from "../src/ouroboros-worker";
+"use strict";
 
-describe("OUroborosWorker", () => {
+const assert = require("assert");
+const OuroborosWorker = require("../");
+
+describe("OuroborosWorker", () => {
   describe("constructor(self: object)", () => {
     it("works", (done) => {
       let self = {};
@@ -11,7 +13,7 @@ describe("OUroborosWorker", () => {
         self.postMessage("good bye");
       };
 
-      let worker = new OUroborosWorker(self);
+      let worker = new OuroborosWorker(self);
 
       worker.onmessage = (e) => {
         assert(e.data === "good bye");

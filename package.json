@@ -5,39 +5,28 @@
   "bugs": {
     "url": "https://github.com/mohayonao/ouroboros-worker/issues"
   },
-  "dependencies": {
-  },
   "devDependencies": {
-    "babel": "^5.5.8",
-    "babel-eslint": "^3.1.17",
-    "eslint": "^0.23.0",
-    "espower-babel": "^3.2.0",
-    "isparta": "^3.0.3",
-    "mocha": "^2.2.5",
-    "power-assert": "^0.11.0"
+    "mocha": "^2.3.4"
   },
   "files": [
-    "package.json",
     "README.md",
     "index.js",
-    "lib"
+    "package.json"
   ],
   "homepage": "https://github.com/mohayonao/ouroboros-worker/",
   "keywords": [
-    "web worker"
+    "worker"
   ],
   "license": "MIT",
-  "main": "./index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/mohayonao/ouroboros-worker.git"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
-    "cover": "babel-node $(npm bin)/isparta cover --report text --report html --report lcov _mocha",
     "lint": "eslint src test",
-    "prepublish": "rm -rf lib && npm run lint && npm run test && npm run build",
-    "test": "mocha --compilers js:espower-babel/guess",
-    "travis": "npm run lint && npm run cover"
+    "prepublish": "npm run lint && npm run test",
+    "test": "mocha",
+    "travis": "npm run lint && npm run test"
   }
 }

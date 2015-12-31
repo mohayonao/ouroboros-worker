@@ -8,20 +8,11 @@ var pathname = WORKER_ENABLED && (function() {
   return new global.URL(script).pathname;
 })();
 
-function OuroborosWorker(self) {
+function NodeWorker() {
   var _this = this;
 
-  self = self || {};
-
-  if (WORKER_ENABLED) {
-    return new global.Worker(pathname);
-  }
-  if (IN_WORKER_CONTEXT) {
-    return global.self;
-  }
-
-  this.self = self;
-  this.self.postMessage = function(data) {
+  this.__self__ = {};
+  this.__self__.postMessage = function(data) {
     setTimeout(function() {
       if (typeof _this.onmessage === "function") {
         _this.onmessage({ data: data });
@@ -30,14 +21,32 @@ function OuroborosWorker(self) {
   };
 }
 
-OuroborosWorker.prototype.postMessage = function(data) {
+NodeWorker.prototype.postMessage = function(data) {
   var _this = this;
 
   setTimeout(function() {
-    if (typeof _this.self.onmessage === "function") {
-      _this.self.onmessage({ data: data });
+    if (typeof _this.__self__.onmessage === "function") {
+      _this.__self__.onmessage({ data: data });
     }
   }, 0);
 };
 
-module.exports = OuroborosWorker;
+function run(mainThread, workerThread) {
+  if (WORKER_ENABLED) {
+    return mainThread(new global.Worker(pathname));
+  }
+  if (IN_WORKER_CONTEXT) {
+    return workerThread(global.self);
+  }
+
+  var worker = new NodeWorker();
+
+  setTimeout(function() {
+    workerThread(worker.__self__);
+    setTimeout(function() {
+      mainThread(worker);
+    }, 0);
+  }, 0);
+}
+
+module.exports = { run: run };

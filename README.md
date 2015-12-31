@@ -5,8 +5,6 @@
 
 > WebWorker to share the code of the main thread
 
-![](https://raw.githubusercontent.com/wiki/mohayonao/ouroboros-worker/images/ouroboros.png)
-
 ## Installation
 
 ```
